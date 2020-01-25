@@ -12,6 +12,14 @@ CORS(app)
    # files to the client! The server should only send structured data in the sallest format necessary.
 scripts = []
 
+
+def get_actors():
+    actors = {}
+    for line in open(app.root_path + "/actors.csv"):
+        actor = line.strip().split(",")
+        actors[actor[1]] = actor[0]
+    return actors
+
 ### DO NOT modify this route ###
 @app.route('/')
 def hello_world():
@@ -34,7 +42,34 @@ parse the text files and send the correct JSON.'''
 @app.route('/script/<int:script_id>')
 def script(script_id):
     # right now, just sends the script id in the URL
-    return jsonify(script_id)
+    data = {}
+    print(app.root_path+'/script_data/')
+    with os.scandir(app.root_path + '/script_data/') as entries:
+        for entry in entries:
+            f = open(entry, 'r')
+            f_script_id = f.readline().strip()
+            if script_id == int(f_script_id):
+                data['id'] = f_script_id
+                f.readline()
+                data['script'] = f.readline().strip()
+                f.readline()
+                parts = []
+                blocking = []
+                while True:
+                    line = f.readline().strip().split(" ")
+                    if line != ['']:
+                        parts.append([line[1].strip(","), line[2].strip(",")])
+                        for i in range (3, len(line)):
+                            actor_block = line[i].split("-")
+                            actor_id = get_actors()[actor_block[0]]
+                            block = actor_block[1].strip(",")
+                            blocking.append({actor_id: block})
+                    else:  # we have reached EOF
+                        break
+                data['parts'] = parts
+                data['blocking'] = blocking
+    scripts.append(data)
+    return jsonify(data)
 
 
 ## POST route for replacing script blocking on server
@@ -51,4 +86,3 @@ def addBlocking():
 if __name__ == "__main__":
     # Only for debugging while developing
     app.run(host='0.0.0.0', debug=True, port=os.environ.get('PORT', 80))
-
