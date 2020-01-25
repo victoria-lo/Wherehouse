@@ -3,8 +3,10 @@
     "",
     "\\app",
     "\\app\\script_data",
-    "\\app\\static"
+    "\\app\\static",
+    "\\app\\static\\css",
+    "\\app\\static\\js"
   ],
-  "SelectedNode": "\\app\\script_data\\hamlet2.txt",
+  "SelectedNode": "\\app\\static\\js\\actor.js",
   "PreviewInSolutionExplorer": false
 }

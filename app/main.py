@@ -59,11 +59,13 @@ def script(script_id):
                     line = f.readline().strip().split(" ")
                     if line != ['']:
                         parts.append([line[1].strip(","), line[2].strip(",")])
-                        for i in range (3, len(line)):
+                        blocking_dict = {}
+                        for i in range(3, len(line)):
                             actor_block = line[i].split("-")
                             actor_id = get_actors()[actor_block[0]]
                             block = actor_block[1].strip(",")
-                            blocking.append({actor_id: block})
+                            blocking_dict[actor_id] = block
+                        blocking.append(blocking_dict)
                     else:  # we have reached EOF
                         break
                 data['parts'] = parts
