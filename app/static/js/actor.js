@@ -75,7 +75,6 @@ function getBlocking() {
 				const position = blocking[i][actorNumber]
 				const startChar = parts[i][0]
 				const endChar = parts[i][1]
-				console.log(position)
 				addScriptPart(scriptText, startChar, endChar, position)
 			}
 		}).catch((error) => {
