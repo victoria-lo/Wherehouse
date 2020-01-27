@@ -48,7 +48,7 @@ def script(script_id):
             f = open(entry, 'r')
             f_script_id = f.readline().strip()
             if script_id == int(f_script_id):
-                data['id'] = f_script_id
+                data['id'] = script_id
                 f.readline()
                 data['script'] = f.readline().strip()
                 f.readline()
