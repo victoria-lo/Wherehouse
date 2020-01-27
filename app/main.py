@@ -43,7 +43,6 @@ parse the text files and send the correct JSON.'''
 def script(script_id):
     # right now, just sends the script id in the URL
     data = {}
-    print(app.root_path+'/script_data/')
     with os.scandir(app.root_path + '/script_data/') as entries:
         for entry in entries:
             f = open(entry, 'r')
@@ -73,7 +72,7 @@ def script(script_id):
                 data['parts'] = parts
                 data['blocking'] = blocking
                 data['actors'] = actors
-                
+
     scripts.append(data)
     return jsonify(data)
 
