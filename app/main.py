@@ -63,7 +63,7 @@ def script(script_id):
                         for i in range(3, len(line)):
                             actor_block = line[i].split("-")
                             actor_id = get_actors()[actor_block[0]]
-                            actors[actor_block[0]] = actor_id
+                            actors[actor_id] = actor_block[0]
                             block = actor_block[1].strip(",")
                             blocking_dict[actor_id] = int(block)
                         blocking.append(blocking_dict)
