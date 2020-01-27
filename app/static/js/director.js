@@ -104,34 +104,45 @@ function getBlocking() {
 		})
 		.then((jsonResult) => {
 			console.log('Result:', jsonResult)
-			const scriptText = jsonResult['script']
-			const parts = jsonResult['parts']
-			const blocking = jsonResult['blocking']
-			const actors = jsonResult['actors']
+			const scriptText = jsonResult['script'];
+			const parts = jsonResult['parts'];
+			const blocking = jsonResult['blocking'];
+			const actors = jsonResult['actors'];
 
 			for (let i = 0; i < parts.length; i++){
-				const positions = blocking[i]
-				const startChar = parts[i][0]
-				const endChar = parts[i][1]
-				const actor_ids = []
-				const scene_pos = []
-				const actor_names = []
+				const positions = blocking[i];
+				const startChar = parts[i][0];
+				const endChar = parts[i][1];
+				const actor_ids = [];
+				const scene_pos = [];
+				const actor_names = [];
 				for (const [key, value] of Object.entries(positions)){
-					actor_ids.push([key])
-					scene_pos.push(value)
+					actor_ids.push([key]);
+					scene_pos.push(value);
 				}
 
 				for (let j = 0; j< actor_ids.length; j++){
-					actor_names.push(actors[j+1])
+					actor_names.push(actors[j+1]);
 				}
 				console.log("Actor names",actor_names);
 
-				addBlockToScreen(scriptText, startChar, endChar, actor_names, scene_pos)
+				addBlockToScreen(scriptText, startChar, endChar, actor_names, scene_pos);
 			}
 		}).catch((error)=> {
 			console.log("An error occurred with fetch:", error)
 		})
 
+}
+
+function removeDuplicates(array){
+	var withoutDup = [];
+
+	for (let i = 0; i<array.length; i++){
+		if (withoutDup.indexOf(array[i]) == -1){
+			withoutDup.push(array[i]);
+		}
+	}
+	return withoutDup;
 }
 
 function changeScript() {
@@ -143,16 +154,36 @@ function changeScript() {
     // The data we are going to send in our request
     // It is a Javascript Object that will be converted to JSON
 
-		//get blocking information currently on the screen
-		const screen_info = []
-		screen_info = getBlockingDetailsOnScreen();
+	//get blocking information currently on the screen
+	var screen_info = getBlockingDetailsOnScreen();
 
-    let data = {
-    	scriptNum: getScriptNumber()
-    }
-		for(let i = 0; i <screen_info.length; i++){
-			data["Line " + (i+1)] = screen_info[i]
+	
+	let scriptText = ""; //script line
+	let actor_names = []; //actor names
+	let blocking_info = [];
+	
+	for (let i = 0; i< screen_info.length; i++){
+		let line = screen_info[i]["text"];
+		scriptText = scriptText + line;
+		let actors = screen_info[i]["actors"];
+		console.log(actors);
+		let blocking = []
+		for (let j = 0; j <actors.length; j++){
+			let actor = actors[j][0];
+			actor_names.push(actor);
+			blocking.push(actors[j][1]);
 		}
+		blocking_info.push(blocking);
+	}
+	
+	
+    let data = {
+    	scriptNum: getScriptNumber(),
+    	scriptLines: scriptText,
+    	names: removeDuplicates(actor_names),
+    	blocking: blocking_info
+    
+	}
 
     // Create the request constructor with all the parameters we need
     const request = new Request(url, {
