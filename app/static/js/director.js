@@ -13,8 +13,8 @@ function removeAllBlocks() {
 /* This function returns a JavaScript array with the information about blocking displayed
 in the browser window.*/
 function getBlockingDetailsOnScreen() {
-	
-	// this array will hold 
+
+	// this array will hold
 	const allBlocks = []
 
 	// go through all of the script parts and scrape the blocking informatio on the screen
@@ -59,7 +59,7 @@ function addBlockToScreen(scriptText, startChar, endChar, actors, positions) {
     	const actorContainer = document.createElement('p');
     	actorContainer.innerHTML = actorHtml;
     	block.children[2].appendChild(actorContainer)
-	} 
+	}
 
     console.log(block)
     blocks.appendChild(block)
@@ -69,17 +69,20 @@ function addBlockToScreen(scriptText, startChar, endChar, actors, positions) {
 /* UI functions above */
 
 
-// Adding example script blocking 
+// Adding example script blocking
 // (the blocks should be removed from the screen when getting a script from the server)
 addBlockToScreen(`That's it Claudius, I'm leaving!Fine! Oh..he left already..`, 0, 31, ['Hamlet', 'Claudius'], [5, 2])
 addBlockToScreen(`That's it Claudius, I'm leaving!Fine! Oh..he left already..`, 32, 58, ['Hamlet', 'Claudius'], ['', 3])
 setScriptNumber('example')
+getBlockingDetailsOnScreen();
 
 //////////////
 // The two functions below should make calls to the server
 // You will have to edit these functions.
 
 function getBlocking() {
+
+  removeAllBlocks();
 	const scriptNumber = scriptNumText.value;
 	setScriptNumber(scriptNumber)
 	console.log(`Get blocking for script number ${scriptNumber}`)
@@ -89,27 +92,63 @@ function getBlocking() {
 	// and use the functions above to add the elements to the browser window.
 	// (similar to actor.js)
 
+	const url = '/script/' + scriptNumber;
+
+	console.log(url)
+
+	//fetch call to server
+
+	return fetch(url)
+		.then((res) => {
+			return res.json()
+		})
+		.then((jsonResult) => {
+			console.log('Result:', jsonResult)
+			const scriptText = jsonResult['script']
+			const parts = jsonResult['parts']
+			const blocking = jsonResult['blocking']
+
+			for (let i = 0; i < parts.length; i++){
+				const positions = blocking[i]
+				const startChar = parts[i][0]
+				const endChar = parts[i][1]
+				const actor_ids = []
+				const scene_pos = []
+				for (const [key, value] of Object.entries(positions)){
+					actor_ids.push(key)
+					scene_pos.push(value)
+				}
+				addBlockToScreen(scriptText, startChar, endChar, actor_ids, scene_pos)
+			}
+		}).catch((error)=> {
+			console.log("An error occurred with fetch:", error)
+		})
+
 }
 
 function changeScript() {
-	// You can make a POST call with all of the 
+	// You can make a POST call with all of the
 	// blocking data to save it on the server
 
 	const url = '/script';
 
     // The data we are going to send in our request
     // It is a Javascript Object that will be converted to JSON
+
+		//get blocking information currently on the screen
+		const screen_info = []
+		screen_info = getBlockingDetailsOnScreen();
+
     let data = {
     	scriptNum: getScriptNumber()
-    	// What else do you need to send to the server?    
-
-
-
     }
+		for(let i = 0; i <screen_info.length; i++){
+			data["Line " + (i+1)] = screen_info[i]
+		}
 
     // Create the request constructor with all the parameters we need
     const request = new Request(url, {
-        method: 'post', 
+        method: 'post',
         body: JSON.stringify(data),
         headers: {
             'Accept': 'application/json, text/plain, */*',
@@ -119,12 +158,12 @@ function changeScript() {
 
     // Send the request
     fetch(request)
-    	.then((res) => { 
+    	.then((res) => {
     		//// Do not write any code here
     		// Logs success if server accepted the request
     		//   You should still check to make sure the blocking was saved properly
     		//   to the text files on the server.
-    		console.log('Success') 
+    		console.log('Success')
 	        return res.json()
 	        ////
 	    })
@@ -137,5 +176,3 @@ function changeScript() {
 	        console.log("An error occured with fetch:", error)
 	    })
 }
-
-
