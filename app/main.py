@@ -17,7 +17,7 @@ def get_actors():
     actors = {}
     for line in open(app.root_path + "/actors.csv"):
         actor = line.strip().split(",")
-        actors[actor[1]] = actor[0]
+        actors[actor[1]] = int(actor[0])
     return actors
 
 ### DO NOT modify this route ###
@@ -58,18 +58,19 @@ def script(script_id):
                 while True:
                     line = f.readline().strip().split(" ")
                     if line != ['']:
-                        parts.append([line[1].strip(","), line[2].strip(",")])
+                        parts.append([int(line[1].strip(",")), int(line[2].strip(","))])
                         blocking_dict = {}
                         for i in range(3, len(line)):
                             actor_block = line[i].split("-")
                             actor_id = get_actors()[actor_block[0]]
                             block = actor_block[1].strip(",")
-                            blocking_dict[actor_id] = block
+                            blocking_dict[actor_id] = int(block)
                         blocking.append(blocking_dict)
                     else:  # we have reached EOF
                         break
                 data['parts'] = parts
                 data['blocking'] = blocking
+                data['actors'] = {v: k for k, v in get_actors().items()}
     scripts.append(data)
     return jsonify(data)
 

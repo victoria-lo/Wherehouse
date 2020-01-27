@@ -107,18 +107,19 @@ function getBlocking() {
 			const scriptText = jsonResult['script']
 			const parts = jsonResult['parts']
 			const blocking = jsonResult['blocking']
+			const actors = jsonResult['actors']
 
 			for (let i = 0; i < parts.length; i++){
 				const positions = blocking[i]
 				const startChar = parts[i][0]
 				const endChar = parts[i][1]
-				const actor_ids = []
+				const actor_names = []
 				const scene_pos = []
 				for (const [key, value] of Object.entries(positions)){
-					actor_ids.push(key)
+					actor_names.push(actors[key])
 					scene_pos.push(value)
 				}
-				addBlockToScreen(scriptText, startChar, endChar, actor_ids, scene_pos)
+				addBlockToScreen(scriptText, startChar, endChar, actor_names, scene_pos)
 			}
 		}).catch((error)=> {
 			console.log("An error occurred with fetch:", error)
