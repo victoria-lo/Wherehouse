@@ -55,6 +55,7 @@ def script(script_id):
                 f.readline()
                 parts = []
                 blocking = []
+                actors = {}
                 while True:
                     line = f.readline().strip().split(" ")
                     if line != ['']:
@@ -63,6 +64,7 @@ def script(script_id):
                         for i in range(3, len(line)):
                             actor_block = line[i].split("-")
                             actor_id = get_actors()[actor_block[0]]
+                            actors[actor_block[0]] = actor_id
                             block = actor_block[1].strip(",")
                             blocking_dict[actor_id] = int(block)
                         blocking.append(blocking_dict)
@@ -70,7 +72,8 @@ def script(script_id):
                         break
                 data['parts'] = parts
                 data['blocking'] = blocking
-                data['actors'] = {v: k for k, v in get_actors().items()}
+                data['actors'] = actors
+                
     scripts.append(data)
     return jsonify(data)
 
