@@ -113,12 +113,19 @@ function getBlocking() {
 				const positions = blocking[i]
 				const startChar = parts[i][0]
 				const endChar = parts[i][1]
-				const actor_names = []
+				const actor_ids = []
 				const scene_pos = []
+				const actor_names = []
 				for (const [key, value] of Object.entries(positions)){
-					actor_names.push(actors[key])
+					actor_ids.push([key])
 					scene_pos.push(value)
 				}
+
+				for (let j = 0; j< actor_ids.length; j++){
+					actor_names.push(actors[j+1])
+				}
+				console.log("Actor names",actor_names);
+
 				addBlockToScreen(scriptText, startChar, endChar, actor_names, scene_pos)
 			}
 		}).catch((error)=> {
