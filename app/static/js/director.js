@@ -119,10 +119,7 @@ function getBlocking() {
 				for (const [key, value] of Object.entries(positions)){
 					actor_ids.push([key]);
 					scene_pos.push(value);
-				}
-
-				for (let j = 0; j< actor_ids.length; j++){
-					actor_names.push(actors[j+1]);
+					actor_names.push(actors[key])
 				}
 				console.log("Actor names",actor_names);
 

@@ -12,9 +12,13 @@ function addScriptPart(scriptText, startChar, endChar, position) {
 	const scriptPartText = scriptText.slice(startChar, endChar + 1);
 	const part = blocks.children.length + 1
 
-	const html = `<h4>Part ${part}</h4>
+	let html = `<h4>Part ${part}</h4>
           <p><em>"${scriptPartText}"</em></p>
-          <p>Stage Position: <strong>${position}</strong></p>`
+		  <p>Stage Position: <strong>${position}</strong></p>`
+	if (position > 0) {
+		html += `<p><img src="positions/${position}.jpeg"/></p>`
+	}
+		  
 
     const block = document.createElement('div'); block.className = 'col-lg-12';
     block.innerHTML = html;
