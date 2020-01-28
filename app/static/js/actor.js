@@ -79,7 +79,7 @@ function getBlocking() {
 				if (position > 0) {
 					const block = document.createElement('div'); block.className = 'col-lg-12';
 					block.innerHTML = `<p><img src="positions/${position}.jpeg"/></p>`;
-					blocks.appendChild(block)
+					blocks.lastChild.appendChild(block)
 				}
 			}
 		}).catch((error) => {
