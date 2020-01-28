@@ -93,6 +93,29 @@ def script(script_id):
 @app.route('/script', methods=['POST'])
 def addBlocking():
     # right now, just sends the original request json
+    to_modify = request.json
+    # 2 things to do, replace in script database on flask server & change .txt files
+    data = {}
+    script_num = to_modify["scriptNum"]
+    actors = to_modify["names"]
+    blockingList = to_modify["blocking"]
+    scriptIndex = -1
+    for s in range(len(scripts)):
+        if (scripts[s]['id']== script_num):
+            scriptIndex = s
+            break
+
+    #need to get actor ids
+    actor_dict = get_actors()
+    actor_ids = []
+    for name in actors:
+        if name in actor_dict:
+            actor_ids.append(actor_dict[name])
+
+    #need to update the blocking
+    mod = scripts[scriptIndex]
+    for i in range(blockingList):
+
     return jsonify(request.json)
 
 
