@@ -166,31 +166,32 @@ function changeScript() {
 
 	//get blocking information currently on the screen
 	var screen_info = getBlockingDetailsOnScreen();
+	screen_info.pop();
 
-	
-	let scriptText = ""; //script line
 	let actor_names = []; //actor names
-	let blocking_info = [];
+	let blocking_info = {};
 	
 	for (let i = 0; i< screen_info.length; i++){
-		let line = screen_info[i]["text"];
-		scriptText = scriptText + line;
 		let actors = screen_info[i]["actors"];
-		console.log(actors);
-		let blocking = []
 		for (let j = 0; j <actors.length; j++){
 			let actor = actors[j][0];
 			actor_names.push(actor);
-			blocking.push(actors[j][1]);
 		}
-		blocking_info.push(blocking);
 	}
-	
+
+	actor_names = removeDuplicates(actor_names);
+	for (let i = 0; i < actor_names.length; i++){
+		blocking_info[actor_names[i]] = [];
+	}
+	for (let i = 0; i < screen_info.length; i++){
+		let block_part = screen_info[i]['actors'];
+		for(let j = 0; j < block_part.length; j++){
+			blocking_info[block_part[j][0]].push(block_part[j][1]);
+		}
+	}
 	
     let data = {
     	scriptNum: getScriptNumber(),
-    	scriptLines: scriptText,
-    	names: removeDuplicates(actor_names),
     	blocking: blocking_info
     
 	}
