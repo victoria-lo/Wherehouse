@@ -49,7 +49,7 @@ function addBlockToScreen(scriptText, startChar, endChar, actors, positions) {
 	const scriptPartText = scriptText.slice(startChar, endChar + 1);
 	const html = `<h4>Part ${blocks.children.length + 1}</h4>
       <p><em>"${scriptPartText}"</em></p>
-      <div class='actors'></div>`
+	  <div class='actors'></div>`
 
     const block = document.createElement('div')
     block.className = 'col-lg-12'
@@ -60,10 +60,8 @@ function addBlockToScreen(scriptText, startChar, endChar, actors, positions) {
     	actorContainer.innerHTML = actorHtml;
     	block.children[2].appendChild(actorContainer)
 	}
-
-    console.log(block)
-    blocks.appendChild(block)
-
+	blocks.appendChild(block)
+	
 }
 
 /* UI functions above */
@@ -108,23 +106,38 @@ function getBlocking() {
 			const parts = jsonResult['parts'];
 			const blocking = jsonResult['blocking'];
 			const actors = jsonResult['actors'];
+			const sound = jsonResult['sound'];
 
+			const castings = [];
+            const roles = [];
+            const casts = [];
 			for (let i = 0; i < parts.length; i++){
 				const positions = blocking[i];
 				const startChar = parts[i][0];
 				const endChar = parts[i][1];
-				const actor_ids = [];
 				const scene_pos = [];
 				const actor_names = [];
 				for (const [key, value] of Object.entries(positions)){
-					actor_ids.push([key]);
 					scene_pos.push(value);
-					actor_names.push(actors[key])
+					actor_names.push(actors[key][0])
+					if (!castings.includes(actors[key])) {
+						castings.push(actors[key])
+						roles.push(actors[key][0])
+						casts.push(actors[key][1])
+					}
 				}
-				console.log("Actor names",actor_names);
-
 				addBlockToScreen(scriptText, startChar, endChar, actor_names, scene_pos);
+				const block = document.createElement('div'); block.className = 'col-lg-12';
+				block.innerHTML = `<p>Background Sound/Music: <i>${sound[i]}</i></p>`
+				blocks.lastChild.appendChild(block)
 			}
+			let html = `<h4>Castings</h4>`
+			for (let i = 0; i < castings.length; i++) {
+				html += `<p>${casts[i]} As ${roles[i]}</p>`
+			}
+			const block = document.createElement('div'); block.className = 'col-lg-12';
+			block.innerHTML = html
+			blocks.appendChild(block)
 		}).catch((error)=> {
 			console.log("An error occurred with fetch:", error)
 		})

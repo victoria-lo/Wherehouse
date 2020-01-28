@@ -12,13 +12,9 @@ function addScriptPart(scriptText, startChar, endChar, position) {
 	const scriptPartText = scriptText.slice(startChar, endChar + 1);
 	const part = blocks.children.length + 1
 
-	let html = `<h4>Part ${part}</h4>
+	const html = `<h4>Part ${part}</h4>
           <p><em>"${scriptPartText}"</em></p>
 		  <p>Stage Position: <strong>${position}</strong></p>`
-	if (position > 0) {
-		html += `<p><img src="positions/${position}.jpeg"/></p>`
-	}
-		  
 
     const block = document.createElement('div'); block.className = 'col-lg-12';
     block.innerHTML = html;
@@ -80,6 +76,11 @@ function getBlocking() {
 				const startChar = parts[i][0]
 				const endChar = parts[i][1]
 				addScriptPart(scriptText, startChar, endChar, position)
+				if (position > 0) {
+					const block = document.createElement('div'); block.className = 'col-lg-12';
+					block.innerHTML = `<p><img src="positions/${position}.jpeg"/></p>`;
+					blocks.appendChild(block)
+				}
 			}
 		}).catch((error) => {
 			// if an error occured it will be logged to the JavaScript console here.

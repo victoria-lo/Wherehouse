@@ -20,6 +20,13 @@ def get_actors():
         actors[actor[1]] = int(actor[0])
     return actors
 
+def get_castings():
+    castings = {}
+    for line in open(app.root_path + "/casts.txt"):
+        casts = line.strip().split(",")
+        castings[casts[0]] = casts[1]
+    return castings
+
 ### DO NOT modify this route ###
 @app.route('/')
 def hello_world():
@@ -54,16 +61,18 @@ def script(script_id):
                 f.readline()
                 parts = []
                 blocking = []
+                sound = []
                 actors = {}
                 while True:
                     line = f.readline().strip().split(" ")
                     if line != ['']:
-                        parts.append([int(line[1].strip(",")), int(line[2].strip(","))])
+                        sound.append(line[1].strip(","))
+                        parts.append([int(line[2].strip(",")), int(line[3].strip(","))])
                         blocking_dict = {}
-                        for i in range(3, len(line)):
+                        for i in range(4, len(line)):
                             actor_block = line[i].split("-")
                             actor_id = get_actors()[actor_block[0]]
-                            actors[actor_id] = actor_block[0]
+                            actors[actor_id] = [actor_block[0], get_castings()[actor_block[0]]]
                             block = actor_block[1].strip(",")
                             blocking_dict[actor_id] = int(block)
                         blocking.append(blocking_dict)
@@ -72,7 +81,7 @@ def script(script_id):
                 data['parts'] = parts
                 data['blocking'] = blocking
                 data['actors'] = actors
-
+                data['sound'] = sound
     scripts.append(data)
     return jsonify(data)
 
