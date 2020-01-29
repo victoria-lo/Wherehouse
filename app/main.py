@@ -132,6 +132,51 @@ def addBlocking():
 
     # now to change the textfiles based on updated script..
 
+    script_id = data["id"]
+
+    with os.scandir(app.root_path + '/script_data/') as entries:
+        file_ptr = None
+        for entry in entries:
+            f = open(entry, 'r')
+            f_script_id = f.readline().strip()
+            if script_id == int(f_script_id):
+                file_ptr = entry
+                break
+            f.close()
+        if file_ptr == None:
+            print ("File not found")
+            return FileNotFoundError
+
+        f = open (file_ptr, 'w')
+        f.write(str(data["id"]))
+        f.write("\n\n")
+        f.write(str(data["script"]))
+        f.write("\n\n")
+      
+        parts = data["parts"]
+
+        for i in range(len(parts)):
+            string_part = ""
+            string_part += str(i + 1)
+            string_part += ". "
+            string_part += str(parts[(i)][0])
+            string_part += ", "
+            string_part += str(parts[(i)][1])
+            string_part +=  ", "
+            blocking_dict = data["blocking"][i]
+            for key in blocking_dict:
+                name = ""
+                for id in act_ids:
+                    if act_ids[id] == key:
+                        name = id
+                string_part += name
+                string_part += "-"
+                string_part += str(blocking_dict[key])
+                string_part += " "
+            string_part += "\n"
+            f.write(string_part)
+            
+
     return jsonify(data)
 
 
