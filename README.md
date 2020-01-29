@@ -26,6 +26,24 @@ To stop/remove container:
 
 `heroku open --app <app-server-name>`
 
+# Objective Statement
+To make the process of production easier and more flexible through avoiding confusion during any changes, which will be seamlessly delivered to the production team, and ultimately saving production time.
+
+# Personas 
+- Persona 1: Christopher Nolan with a creative mind who get ideas on a whim and often likes to make frequent changes to scripts, and wants the changes to be easily accessed by his actors
+- Persona 2: Julie Andrews is new to the world of theatre and often forgets when she’s supposed to be on stage when she is practicing her lines by herself
+- Persona 3: Judd Apatow is an extremely type A director (i.e., rigidly organized, impatient, and concerned with time management) who is strict on productivity and efficiency
+
+# User Stories
+- User Story 1: As a creative-minded director, I want to be able to edit scripts and blocking arrangements whenever I get a new idea so that I can see what ideas work best for my production
+- User Story 2: As a newcomer to acting and theatre, I always have trouble remembering where I’m supposed to be on stage and I want to be better organized to impress my director so that I’m able to get potential future gigs
+- User Story 3: As a high-achieving workaholic director, I want any changes to a script to be delivered immediately to his actors so that they can adequately prepare for the next rehearsal
+
+# Acceptance Criteria
+1. Easy to navigate platform so that changes can be made quickly
+2. Being able to search up scripts and get the up-to-date version of the blocking (and possible other) arrangements in the script
+3. Changes are made instantaneously to the script and delivered immediately to actors
+
 # JSON files
 GET JSON DATA:
 For the actor and director view, we are fetching information for a given script.
