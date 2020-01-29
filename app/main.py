@@ -62,15 +62,13 @@ def script(script_id):
                 f.readline()
                 parts = []
                 blocking = []
-                sound = []
                 actors = {}
                 while True:
                     line = f.readline().strip().split(" ")
                     if line != ['']:
-                        sound.append(line[1].strip(","))
-                        parts.append([int(line[2].strip(",")), int(line[3].strip(","))])
+                        parts.append([int(line[1].strip(",")), int(line[2].strip(","))])
                         blocking_dict = {}
-                        for i in range(4, len(line)):
+                        for i in range(3, len(line)):
                             actor_block = line[i].split("-")
                             actor_id = get_actors()[actor_block[0]]
                             actors[actor_id] = [actor_block[0], get_castings()[actor_block[0]]]
@@ -82,7 +80,20 @@ def script(script_id):
                 data['parts'] = parts
                 data['blocking'] = blocking
                 data['actors'] = actors
-                data['sound'] = sound
+
+    with os.scandir(app.root_path + '/sound_data/') as entries:
+        sound = []
+        for entry in entries:
+            f = open(entry, 'r')
+            f_script_id = f.readline().strip()
+            if script_id == int(f_script_id):
+                while True:
+                    line = f.readline().strip()
+                    if line != '':
+                        sound.append(line)
+                    else:
+                        break
+        data['sound'] = sound
     scripts.append(data)
     return jsonify(data)
 
@@ -95,34 +106,32 @@ def script(script_id):
 def addBlocking():
     # right now, just sends the original request json
     to_modify = request.json
+
     # 2 things to do, replace in script database on flask server & change .txt files
     script_num = to_modify["scriptNum"]
-    blockingListReceived = to_modify["blocking"]
-    scriptIndex = -1
+    blocking_list = to_modify["blocking"]
     counter = 0
     data = {}
     for s in scripts:
-        if str(s["id"]) == (to_modify["scriptNum"]):
+        if str(s["id"]) == script_num:
             data = s
-        counter +=1
-    
-    #get the actor ids
-    act_ids = get_actors();
+        counter += 1
+
+    # get the actor ids
+    act_ids = get_actors()
     block = data["blocking"]
     id_to_block = {}
-    for key in blockingListReceived:
+    for key in blocking_list:
         corr_id = act_ids[key]
-        id_to_block[corr_id] = blockingListReceived[key]
-    
+        id_to_block[corr_id] = blocking_list[key]
+
     for i in range(len(block)):
         part = block[i]
         for id in part:
             part[id] = int(id_to_block[id][i])
-    
-    #now to change the textfiles based on updated script..
- 
 
-    
+    # now to change the textfiles based on updated script..
+
     return jsonify(data)
 
 
