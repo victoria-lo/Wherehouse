@@ -189,12 +189,15 @@ function changeScript() {
 			blocking_info[block_part[j][0]].push(block_part[j][1]);
 		}
 	}
-	
-    let data = {
-    	scriptNum: getScriptNumber(),
-    	blocking: blocking_info
-    
+	for (let [key, value] of Object.entries(blocking_info)) {
+		key = String(key);
 	}
+	console.log("blocking info", blocking_info);
+    let data = {
+    	"scriptNum": getScriptNumber(),
+    	"blocking": blocking_info
+	}
+	console.log("data to json", data);
 
     // Create the request constructor with all the parameters we need
     const request = new Request(url, {
