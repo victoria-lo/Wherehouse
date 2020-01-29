@@ -20,6 +20,7 @@ def get_actors():
         actors[actor[1]] = int(actor[0])
     return actors
 
+
 def get_castings():
     castings = {}
     for line in open(app.root_path + "/casts.txt"):
@@ -95,28 +96,34 @@ def addBlocking():
     # right now, just sends the original request json
     to_modify = request.json
     # 2 things to do, replace in script database on flask server & change .txt files
-    data = {}
     script_num = to_modify["scriptNum"]
-    actors = to_modify["names"]
-    blockingList = to_modify["blocking"]
+    blockingListReceived = to_modify["blocking"]
     scriptIndex = -1
-    for s in range(len(scripts)):
-        if (scripts[s]['id']== script_num):
-            scriptIndex = s
-            break
+    counter = 0
+    data = {}
+    for s in scripts:
+        if str(s["id"]) == (to_modify["scriptNum"]):
+            data = s
+        counter +=1
+    
+    #get the actor ids
+    act_ids = get_actors();
+    block = data["blocking"]
+    id_to_block = {}
+    for key in blockingListReceived:
+        corr_id = act_ids[key]
+        id_to_block[corr_id] = blockingListReceived[key]
+    
+    for i in range(len(block)):
+        part = block[i]
+        for id in part:
+            part[id] = int(id_to_block[id][i])
+    
+    #now to change the textfiles based on updated script..
+ 
 
-    #need to get actor ids
-    actor_dict = get_actors()
-    actor_ids = []
-    for name in actors:
-        if name in actor_dict:
-            actor_ids.append(actor_dict[name])
-
-    #need to update the blocking
-    mod = scripts[scriptIndex]
-    for i in range(blockingList):
-
-    return jsonify(request.json)
+    
+    return jsonify(data)
 
 
 
