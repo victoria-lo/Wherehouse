@@ -7,6 +7,28 @@ function removeAllBlocks() {
 	blocks.innerHTML = '';
 }
 
+function getBlockingDetailsOnScreen() {
+
+	// this array will hold
+	const allBlocks = []
+
+	// go through all of the script parts and scrape the blocking informatio on the screen
+	for (let i = 0; i < blocks.children.length; i++) {
+		const block = {};  const blockElement = blocks.children[i]
+		block.part = i + 1;
+		block.text = blockElement.children[1].textContent;
+		block.actors = []
+		const actors = blockElement.children[2].children
+		for (let j = 0; j < actors.length; j++) {
+			block.actors.push([actors[j].textContent, actors[j].children[0].value])
+		}
+		allBlocks.push(block)
+	}
+
+	// Look in the JavaScript console to see the result of calling this function
+	return allBlocks;
+}
+
 function addCastingToScreen(roles, casts) {
 
     const html = `<h4>Castings</h4>
@@ -112,5 +134,7 @@ function getSound() {
 }
 
 function updateValues() {
+	const url = "/script";
+	const screen_info = getBlockingDetailsOnScreen();
 
 }

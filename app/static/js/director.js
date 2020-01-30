@@ -131,7 +131,8 @@ function getBlocking() {
 				block.innerHTML = `<p>Background Sound/Music: <i>${sound[i]}</i></p>`
 				blocks.lastChild.appendChild(block)
 			}
-			let html = `<h4>Castings</h4>`
+			let html = `<h4>Castings</h4>
+			<p><i>Format: &ltactor name&gt As &ltrole&gt</i>`
 			for (let i = 0; i < castings.length; i++) {
 				html += `<p>${casts[i]} As ${roles[i]}</p>`
 			}
