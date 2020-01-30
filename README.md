@@ -69,3 +69,28 @@ Finally, in order to be able to map the actor id to the character names that is 
 Extra Serialization for Enhancement Purposes
 - Names of actors (i.e., castings) stored in the "actors" attribute
 - Names of background sound effect/music stored in the "sound" attribute, each element representing the sound played for a part in the script
+
+POST JSON DATA:
+For the director, we are requesting to modify scripts. Since the server is a database of sorts for scripts, we needed to make sure that only essential information was being passed through with the JSON to avoid redundancy.
+Therefore, we decided to only store the script number that we are modifying and the blocking information that we are modifying keeping only the actor names and their new blocking positions in the JSON file
+
+We only need these 2 things because all of the scripts are stored on the server can be identified through the script number. On the server, the script text, parts, and actor id information is already stored so we don't need to include that in our JSON file when we send the POST request. 
+
+For a blocking change to a single script we are storing the following in the JSON:
+- the script number 
+- the blocking for each character in each part
+
+We've discussed the script number above. Now onto how the blocking for each character is stored:
+
+By using getBlockingDetailsOnScreen, we are able to get all this information from the array that is returned by calling that function. Since each element of that array is for one part of the script, 
+it becomes fairly straightforward to store the blocking information for each actor. 
+
+The format for the blocking for each character in a part is the following:
+- A dictionary mapping the character name to the blocking information for that character for the script. An example of this would look like the following:
+
+{Hamlet: [1, 6], Claudius: [3, 8]}
+
+In this example, the value of each key is the blocking information for each character during each part of the script. So for Hamlet, 1 is where Hamlet is for the first part and 6, is where Hamlet is for the second part in the script
+
+On the server side we can retrive this POST request and modify only the blocking information in script database. This is easily done as we have the updated blocking changes and the script number in the JSON. 
+It just becomes a matter of extracting that information and using it to updated the script in the script database.

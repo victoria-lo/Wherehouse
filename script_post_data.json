@@ -1,0 +1,8 @@
+{
+  "blocking": {
+    "Hamlet": [ "5", "0" ],
+
+    "Claudius": [ "2", "3" ]
+  },
+  "scriptNum": 1
+}
