@@ -2,12 +2,43 @@
 "use strict";
 console.log('manager.js')  // log to the JavaScript console.
 
+let view = ""
 // Function to remove all blocking parts from current window
 function removeAllBlocks() {
 	blocks.innerHTML = '';
 }
 
-function getBlockingDetailsOnScreen() {
+
+function setScriptNumber(num) {
+	const scriptNum = document.querySelector('#scriptNum')
+	scriptNum.innerHTML = `${num}`
+}
+
+function getScriptNumber(num) {
+	return document.querySelector('#scriptNum').innerHTML
+}
+
+function getCastingDetailsOnScreen() {
+
+	// this array will hold
+	const allBlocks = []
+
+	// go through all of the script parts and scrape the blocking informatio on the screen
+	for (let i = 0; i < blocks.children.length; i++) {
+		const block = {};  const blockElement = blocks.children[i]
+		block.actors = []
+		const actors = blockElement.children[1].children
+		for (let j = 0; j < actors.length; j++) {
+			block.actors.push([actors[j].textContent, actors[j].children[0].value])
+		}
+		allBlocks.push(block)
+	}
+
+	// Look in the JavaScript console to see the result of calling this function
+	return allBlocks;
+}
+
+function getLightingDetailsOnScreen() {
 
 	// this array will hold
 	const allBlocks = []
@@ -17,11 +48,7 @@ function getBlockingDetailsOnScreen() {
 		const block = {};  const blockElement = blocks.children[i]
 		block.part = i + 1;
 		block.text = blockElement.children[1].textContent;
-		block.actors = []
-		const actors = blockElement.children[2].children
-		for (let j = 0; j < actors.length; j++) {
-			block.actors.push([actors[j].textContent, actors[j].children[0].value])
-		}
+		block.sound = [blockElement.children[2].textContent, blockElement.children[2].children[0].value]
 		allBlocks.push(block)
 	}
 
@@ -38,7 +65,7 @@ function addCastingToScreen(roles, casts) {
     block.className = 'col-lg-12'
     block.innerHTML = html;
     for (let j = 0; j < roles.length; j++) {
-    	const actorHtml = `${roles[j]}: <input id='scriptText' style="width: 100px;" type="text" name="" value="${casts[j]}">`
+    	const actorHtml = `${roles[j]}<input id='scriptText' style="width: 100px;" type="text" name="" value="${casts[j]}">`
     	const actorContainer = document.createElement('p');
     	actorContainer.innerHTML = actorHtml;
     	block.children[1].appendChild(actorContainer)
@@ -61,9 +88,11 @@ function addSoundBlock(scriptText, startChar, endChar, sfx) {
 }
 
 function getCasting() {
-    removeAllBlocks();
+	removeAllBlocks();
 	const scriptNumber = scriptNumText.value;
+	setScriptNumber(scriptNumber)
 	console.log(`Get casting for script number ${scriptNumber}`)
+	view = "castings"
 
     const url = '/script/' + scriptNumber;
     return fetch(url)
@@ -96,12 +125,11 @@ function getCasting() {
 }
 
 function getSound() {
-    removeAllBlocks();
-
-	// Get the script and actor numbers from the text box.
-    const scriptNumber = scriptNumText.value;
-    
-	console.log(`Get blocking for script number ${scriptNumber}`)
+	removeAllBlocks();
+	const scriptNumber = scriptNumText.value;
+	setScriptNumber(scriptNumber)
+	console.log(`Get sound for script number ${scriptNumber}`)
+	view = "sound"
 	/* Add code below to get JSON from the server and display it appropriately. */
     const url = "/script/" + scriptNumber;
     
@@ -134,7 +162,67 @@ function getSound() {
 }
 
 function updateValues() {
-	const url = "/script";
-	const screen_info = getBlockingDetailsOnScreen();
+	let screen_info;
+	const castings_info = [];
+	const sound_info = [];
 
+	const url = "/script";
+	if (view == "castings") {
+		screen_info = getCastingDetailsOnScreen();
+		for (let i = 0; i< screen_info.length; i++){
+			let actors = screen_info[i]["actors"];
+			for (let j = 0; j <actors.length; j++){
+				let role = actors[j][0];
+				let actor = actors[j][1];
+				castings_info.push([role, actor]);
+			}
+		}
+	} else if (view == "sound") {
+		screen_info = getLightingDetailsOnScreen();
+		for (let i = 0; i< screen_info.length; i++){
+			let sound = screen_info[i]["sound"];
+			let sound_name = sound[1];
+			sound_info.push(sound_name);
+		}
+	}
+
+    let data = {
+    	"scriptNum": getScriptNumber(),
+		"castings": castings_info,
+		"sound": sound_info
+	}
+
+	if (screen_info) {
+		console.log("data to json", data);
+
+		// Create the request constructor with all the parameters we need
+		const request = new Request(url, {
+			method: 'post',
+			body: JSON.stringify(data),
+			headers: {
+				'Accept': 'application/json, text/plain, */*',
+				'Content-Type': 'application/json'
+			},
+		});
+
+		// Send the request
+		fetch(request)
+			.then((res) => {
+				//// Do not write any code here
+				// Logs success if server accepted the request
+				//   You should still check to make sure the blocking was saved properly
+				//   to the text files on the server.
+				console.log('Success')
+				return res.json()
+				////
+			})
+			.then((jsonResult) => {
+				// Although this is a post request, sometimes you might return JSON as well
+				console.log('Result:', jsonResult)
+
+			}).catch((error) => {
+				// if an error occured it will be logged to the JavaScript console here.
+				console.log("An error occured with fetch:", error)
+			})
+	}
 }

@@ -175,10 +175,62 @@ def addBlocking():
                 string_part += " "
             string_part += "\n"
             f.write(string_part)
-            
-
     return jsonify(data)
 
+
+@app.route('/production', methods=['POST'])
+def updateValues():
+    to_modify = request.json
+    # 2 things to do, replace in script database on flask server & change .txt files
+    script_num = to_modify["scriptNum"]
+    castings_list = to_modify["castings"]
+    sound_list = to_modify["sound"]
+    data = {}
+    for s in scripts:
+        if str(s["id"]) == script_num:
+            data = s
+
+    # update castings
+    if len(castings_list) > 0:
+        act_ids = get_actors()
+        actors = data["actors"]
+        for cast in castings_list:
+            actor_id = act_ids[cast[0]]
+            actors[actor_id] = cast[1]
+
+        # update casts.txt
+        f = open(app.root_path + "/casts.txt")
+        for cast in castings_list:
+            f.write(cast[0] + "," + cast[1] + "\n")
+
+    # update sound
+    if len(sound_list) > 0:
+        i = 0
+        for sound in sound_list:
+            data["sound"][i] = sound
+            i += 1
+        # update sound.txt
+        with os.scandir(app.root_path + '/sound_data/') as entries:
+            file_ptr = None
+            for entry in entries:
+                f = open(entry, 'r')
+                f_script_id = f.readline().strip()
+                if script_num == int(f_script_id):
+                    file_ptr = entry
+                    break
+                f.close()
+            if file_ptr is None:
+                print("File not found")
+                return FileNotFoundError
+
+            f = open(file_ptr, 'w')
+            f.write(str(data["id"]))
+            f.write("\n")
+            for sound in data["sound"]:
+                f.write(sound)
+                f.write("\n")
+
+    return jsonify(data)
 
 
 if __name__ == "__main__":
