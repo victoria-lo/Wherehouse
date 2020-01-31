@@ -166,7 +166,7 @@ function updateValues() {
 	const castings_info = [];
 	const sound_info = [];
 
-	const url = "/script";
+	const url = "/production";
 	if (view == "castings") {
 		screen_info = getCastingDetailsOnScreen();
 		for (let i = 0; i< screen_info.length; i++){
@@ -197,7 +197,7 @@ function updateValues() {
 
 		// Create the request constructor with all the parameters we need
 		const request = new Request(url, {
-			method: 'post',
+			method: 'POST',
 			body: JSON.stringify(data),
 			headers: {
 				'Accept': 'application/json, text/plain, */*',

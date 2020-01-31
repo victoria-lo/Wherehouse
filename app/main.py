@@ -50,52 +50,9 @@ parse the text files and send the correct JSON.'''
 @app.route('/script/<int:script_id>')
 def script(script_id):
     # right now, just sends the script id in the URL
-    data = {}
-    with os.scandir(app.root_path + '/script_data/') as entries:
-        for entry in entries:
-            f = open(entry, 'r')
-            f_script_id = f.readline().strip()
-            if script_id == int(f_script_id):
-                data['id'] = script_id
-                f.readline()
-                data['script'] = f.readline().strip()
-                f.readline()
-                parts = []
-                blocking = []
-                actors = {}
-                while True:
-                    line = f.readline().strip().split(" ")
-                    if line != ['']:
-                        parts.append([int(line[1].strip(",")), int(line[2].strip(","))])
-                        blocking_dict = {}
-                        for i in range(3, len(line)):
-                            actor_block = line[i].split("-")
-                            actor_id = get_actors()[actor_block[0]]
-                            actors[actor_id] = [actor_block[0], get_castings()[actor_block[0]]]
-                            block = actor_block[1].strip(",")
-                            blocking_dict[actor_id] = int(block)
-                        blocking.append(blocking_dict)
-                    else:  # we have reached EOF
-                        break
-                data['parts'] = parts
-                data['blocking'] = blocking
-                data['actors'] = actors
-
-    with os.scandir(app.root_path + '/sound_data/') as entries:
-        sound = []
-        for entry in entries:
-            f = open(entry, 'r')
-            f_script_id = f.readline().strip()
-            if script_id == int(f_script_id):
-                while True:
-                    line = f.readline().strip()
-                    if line != '':
-                        sound.append(line)
-                    else:
-                        break
-        data['sound'] = sound
-    scripts.append(data)
-    return jsonify(data)
+    for data in scripts:
+        if script_id == data["id"]:
+            return jsonify(data)
 
 
 ## POST route for replacing script blocking on server
@@ -193,13 +150,13 @@ def updateValues():
     # update castings
     if len(castings_list) > 0:
         act_ids = get_actors()
-        actors = data["actors"]
+        actors = data['actors']
         for cast in castings_list:
             actor_id = act_ids[cast[0]]
-            actors[actor_id] = cast[1]
+            actors[actor_id][1] = cast[1]
 
         # update casts.txt
-        f = open(app.root_path + "/casts.txt")
+        f = open(app.root_path + "/casts.txt", "w")
         for cast in castings_list:
             f.write(cast[0] + "," + cast[1] + "\n")
 
@@ -233,6 +190,54 @@ def updateValues():
     return jsonify(data)
 
 
+def populateDatabase():
+    with os.scandir(app.root_path + '/script_data/') as entries:
+        for entry in entries:
+            data_node = {}
+            f = open(entry, 'r')
+            script_id = f.readline().strip()
+            data_node['id'] = int(script_id)
+            f.readline()
+            data_node['script'] = f.readline().strip()
+            f.readline()
+            parts = []
+            blocking = []
+            actors = {}
+            while True:
+                line = f.readline().strip().split(" ")
+                if line != ['']:
+                    parts.append([int(line[1].strip(",")), int(line[2].strip(","))])
+                    blocking_dict = {}
+                    for i in range(3, len(line)):
+                        actor_block = line[i].split("-")
+                        actor_id = get_actors()[actor_block[0]]
+                        actors[actor_id] = [actor_block[0], get_castings()[actor_block[0]]]
+                        block = actor_block[1].strip(",")
+                        blocking_dict[actor_id] = int(block)
+                    blocking.append(blocking_dict)
+                else:  # we have reached EOF
+                    break
+            data_node['parts'] = parts
+            data_node['blocking'] = blocking
+            data_node['actors'] = actors
+            scripts.append(data_node)
+
+    with os.scandir(app.root_path + '/sound_data/') as entries:
+        for entry in entries:
+            sound = []
+            f = open(entry, 'r')
+            script_id = int(f.readline().strip())
+            while True:
+                line = f.readline().strip()
+                if line != '':
+                    sound.append(line)
+                else:
+                    break
+            for data in scripts:
+                if data['id'] == script_id:
+                    data['sound'] = sound
+
 if __name__ == "__main__":
     # Only for debugging while developing
+    populateDatabase()
     app.run(host='0.0.0.0', debug=True, port=os.environ.get('PORT', 80))
