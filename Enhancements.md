@@ -8,3 +8,6 @@ In the manager view, the manager will be able to:
 - make changes to the castings and/or music/sound by modifying the text field and clicking "update"
 
 All the changes that the production manager has made will also be reflected on the director's view.
+
+To store the castings and sound, we've added a casts.txt on the root folder and a sound_data folder that is similar in
+structure to the script_data folder.
