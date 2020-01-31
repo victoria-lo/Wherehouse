@@ -50,9 +50,51 @@ parse the text files and send the correct JSON.'''
 @app.route('/script/<int:script_id>')
 def script(script_id):
     # right now, just sends the script id in the URL
-    for data in scripts:
-        if script_id == data["id"]:
-            return jsonify(data)
+    data = {}
+    with os.scandir(app.root_path + '/script_data/') as entries:
+        for entry in entries:
+            f = open(entry, 'r')
+            f_script_id = f.readline().strip()
+            if script_id == int(f_script_id):
+                data['id'] = script_id
+                f.readline()
+                data['script'] = f.readline().strip()
+                f.readline()
+                parts = []
+                blocking = []
+                actors = {}
+                while True:
+                    line = f.readline().strip().split(" ")
+                    if line != ['']:
+                        parts.append([int(line[1].strip(",")), int(line[2].strip(","))])
+                        blocking_dict = {}
+                        for i in range(3, len(line)):
+                            actor_block = line[i].split("-")
+                            actor_id = get_actors()[actor_block[0]]
+                            actors[actor_id] = [actor_block[0], get_castings()[actor_block[0]]]
+                            block = actor_block[1].strip(",")
+                            blocking_dict[actor_id] = int(block)
+                        blocking.append(blocking_dict)
+                    else:  # we have reached EOF
+                        break
+                data['parts'] = parts
+                data['blocking'] = blocking
+                data['actors'] = actors
+
+    with os.scandir(app.root_path + '/sound_data/') as entries:
+        sound = []
+        for entry in entries:
+            f = open(entry, 'r')
+            f_script_id = f.readline().strip()
+            if script_id == int(f_script_id):
+                while True:
+                    line = f.readline().strip()
+                    if line != '':
+                        sound.append(line)
+                    else:
+                        break
+        data['sound'] = sound
+    return jsonify(data)
 
 
 ## POST route for replacing script blocking on server
