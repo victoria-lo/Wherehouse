@@ -26,6 +26,8 @@ To stop/remove container:
 
 `heroku open --app <app-server-name>`
 
+URL: https://csc301-a1.herokuapp.com/
+
 # Objective Statement
 To make the process of production easier and more flexible through avoiding confusion during any changes, which will be seamlessly delivered to the production team, and ultimately saving production time.
 
