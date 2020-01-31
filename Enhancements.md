@@ -11,3 +11,8 @@ All the changes that the production manager has made will also be reflected on t
 
 To store the castings and sound, we've added a casts.txt on the root folder and a sound_data folder that is similar in
 structure to the script_data folder.
+
+We have chosen to implement these enhancements because they seem to go well with the objective statement of this app.
+In particular, it helps with the coordination of the production manager and the director to avoid confusion and helps 
+improve efficiency of the production. It also relates to the course material since we are required to serialize the json 
+for the sound and casting data, similar to what we did for the blocking.
