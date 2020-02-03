@@ -54,38 +54,7 @@ function getBlocking() {
 	const actorNumber = actorText.value;
 	console.log(`Get blocking for script number ${scriptNumber} for actor ${actorNumber}`)
 	/* Add code below to get JSON from the server and display it appropriately. */
-	const url = "/script/" + scriptNumber;
-	console.log(url)
-	// A 'fetch' AJAX call to the server.
-	return fetch(url)
-		.then((res) => {
-			//// Do not write any code here
-			return res.json()
-			//// Do not write any code here
-		})
-		.then((jsonResult) => {
-			// This is where the JSON result (jsonResult) from the server can be accessed and used.
-			console.log('Result:', jsonResult)
-			// Use the JSON to add a script part
-			const scriptText = jsonResult['script'] // the script
-			const parts = jsonResult['parts'] // a list: each element is a list [startChar, endChar]
-			const blocking = jsonResult['blocking'] // a list of dictionary of each actor's blocking [{ actor_id: blocking_num }, ...]
-			
-			for (let i = 0; i < parts.length; i++) {
-				const position = blocking[i][actorNumber]
-				const startChar = parts[i][0]
-				const endChar = parts[i][1]
-				addScriptPart(scriptText, startChar, endChar, position)
-				if (position > 0) {
-					const block = document.createElement('div'); block.className = 'col-lg-12';
-					block.innerHTML = `<p><img src="positions/${position}.jpeg"/></p>`;
-					blocks.lastChild.appendChild(block)
-				}
-			}
-		}).catch((error) => {
-			// if an error occured it will be logged to the JavaScript console here.
-			console.log("An error occured with fetch:", error)
-		})
+	
 }
 
 
