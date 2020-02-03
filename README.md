@@ -1,4 +1,4 @@
-# Wherehouse
+# Wherehouse :house:
 **Inventory Locator System**
 > 100DaysOfCode: Day 2
 
@@ -17,7 +17,7 @@ View project on [victoria-lo.github.io/BookFlix/](https://victoria-lo.github.io/
 - Using Heroku to deploy apps
 
 
-#Technologies Used
+# Technologies Used
 
 ## Heroku
 `heroku create`
