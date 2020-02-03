@@ -1,6 +1,6 @@
 # Wherehouse :house:
 **Inventory Locator System**
-> 100DaysOfCode: Day 2
+> 100DaysOfCode: Day 2 - 4
 
 View blog post on [Medium](https://medium.com/@victoria2666/100-days-of-code-day-1-of-100-f31ba371a7b9)
 
