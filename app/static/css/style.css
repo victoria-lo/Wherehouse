@@ -6,7 +6,6 @@ body {
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
-.marketing,
 .footer {
   padding-right: 1rem;
   padding-left: 1rem;
@@ -31,6 +30,18 @@ body {
   border-top: .05rem solid #e5e5e5;
 }
 
+table, td, th {
+	border-collapse: collapse;
+	border: none;
+}
+
+td{
+  font-size: 16px;
+}
+
+th {
+	font-size: 14px;
+}
 /* Customize container */
 @media (min-width: 48em) {
   .container {
@@ -51,19 +62,11 @@ body {
   font-size: 1.5rem;
 }
 
-/* Supporting marketing content */
-.marketing {
-  margin: 3rem 0;
-}
-.marketing p + h4 {
-  margin-top: 1.5rem;
-}
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 48em) {
   /* Remove the padding we set earlier */
   .header,
-  .marketing,
   .footer {
     padding-right: 0;
     padding-left: 0;
