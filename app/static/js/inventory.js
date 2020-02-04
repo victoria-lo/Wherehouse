@@ -19,26 +19,34 @@ class Item {
 class Warehouse {
 	constructor(capacity) {
         this.items = [];
-        this.storage // function, sum of all item.quantity
-
 		this.capacity = capacity; //total capacity
-		// set item ID
+		
+		//storage = sum of all item quantity, init as 0
+		this.storage = 0;
+
 		this.warehouseId = numberOfWarehouses;
 		numberOfWarehouses++;
     }
 }
 
-//initial data
-itemData.push(new Item('Ice Cream', 65, 0));
-itemData.push(new Item('Food', 145, 0));
-itemData.push(new Item('Books', 476, 1));
-itemData.push(new Item('Camera', 42, 1));
-itemData.push(new Item('Pen', 300, 2));
-itemData.push(new Item('Hats', 420, 2));
-itemData.push(new Item('Chairs', 100, 4));
+Warehouse.prototype = {
+	getStorage: function(){
+		for(let i = 0; i < this.items.length; i++){
+            this.storage += this.items[i].quantity;
+		}
+		return this.storage;
+	}
+}
+//To get the storage of a warehouse, warehouseData[0].getStorage()
 
-warehouseData.push(new Warehouse(450));
-warehouseData.push(new Warehouse(650));
-warehouseData.push(new Warehouse(500));
-warehouseData.push(new Warehouse(250));
-warehouseData.push(new Warehouse(1000));
+//initial data item[0]
+itemData.push(new Item('Ice Cream', 65, 0));
+
+warehouseData.push(new Warehouse(450)); //warehouse 0
+warehouseData.push(new Warehouse(650)); //warehouse 1
+warehouseData.push(new Warehouse(500)); //warehouse 2
+warehouseData.push(new Warehouse(250)); //warehouse 3
+warehouseData.push(new Warehouse(1000)); //warehouse 4
+
+warehouseData[0].items.push(itemData[0]); // push item[0] to items list in warehouse 0
+
