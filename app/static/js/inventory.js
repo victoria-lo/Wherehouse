@@ -41,35 +41,16 @@ Warehouse.prototype = {
 //To get the storage of a warehouse, warehouseData[0].getStorage()
 
 //initial data item[0]
-itemData.push(new Item('Ice Cream', 65, 0));
+if(itemData.length < 1){
+	itemData.push(new Item('Ice Cream', 65, 0));
 
-warehouseData.push(new Warehouse(450)); //warehouse 0
-warehouseData.push(new Warehouse(650)); //warehouse 1
-warehouseData.push(new Warehouse(500)); //warehouse 2
-warehouseData.push(new Warehouse(250)); //warehouse 3
-warehouseData.push(new Warehouse(1000)); //warehouse 4
+	warehouseData.push(new Warehouse(450)); //warehouse 0
+	warehouseData.push(new Warehouse(650)); //warehouse 1
+	warehouseData.push(new Warehouse(500)); //warehouse 2
+	warehouseData.push(new Warehouse(250)); //warehouse 3
+	warehouseData.push(new Warehouse(1000)); //warehouse 4
 
-warehouseData[0].items.push(itemData[0]); // push item[0] to items list in warehouse 0
-
-//Add listeners
-const warehouseLookup = document.querySelector('#warehouseLookup');
-warehouseLookup.addEventListener(submit, loadTable);
-
-const addInventory = document.querySelector('#addNewItem');
-addInventory.addEventListener(submit, addInventory);
-
-//Add input elements
-const warehouseInfoID = document.querySelector('#warehouseId');
-const itemName = document.querySelector('#itemName');
-const itemQty = document.querySelector('#itemQty');
-const itemWarehouse = document.querySelector('#warehouse');
-
-//In the Manager tab, manager can lookup a specified warehouse data
-function loadTable(){
-
+	warehouseData[0].items.push(itemData[0]); // push item[0] to items list in warehouse 0
 }
 
-//Adds inventory the itemData and push item to warehouseData
-function addInventory(){
 
-}
