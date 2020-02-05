@@ -29,6 +29,7 @@ class Warehouse {
     }
 }
 
+//calculates the total storage used in the warehouse
 Warehouse.prototype = {
 	getStorage: function(){
 		for(let i = 0; i < this.items.length; i++){
@@ -50,3 +51,25 @@ warehouseData.push(new Warehouse(1000)); //warehouse 4
 
 warehouseData[0].items.push(itemData[0]); // push item[0] to items list in warehouse 0
 
+//Add listeners
+const warehouseLookup = document.querySelector('#warehouseLookup');
+warehouseLookup.addEventListener(submit, loadTable);
+
+const addInventory = document.querySelector('#addNewItem');
+addInventory.addEventListener(submit, addInventory);
+
+//Add input elements
+const warehouseInfoID = document.querySelector('#warehouseId');
+const itemName = document.querySelector('#itemName');
+const itemQty = document.querySelector('#itemQty');
+const itemWarehouse = document.querySelector('#warehouse');
+
+//In the Manager tab, manager can lookup a specified warehouse data
+function loadTable(){
+
+}
+
+//Adds inventory the itemData and push item to warehouseData
+function addInventory(){
+
+}

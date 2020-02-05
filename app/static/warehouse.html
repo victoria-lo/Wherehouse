@@ -34,37 +34,29 @@
             </li>
           </ul>
         </nav>
-        <h3 class="text-muted">Inventory List</h3>
       </div>
 
+      <h3 class="text-muted">Manager</h3>
+      <p>Displays a specified warehouse info, the items stored in it and its capacity.</p>
 
-      <div id="table">
-          <table class = "table">
-            <thead>
-              <tr>
-                <th scope="col">Item ID</th>
-                <th scope="col">Name</thscope="col">
-                <th scope="col">Quantity</th>
-                <th scope="col">Warehouse ID</th>
-              </tr>
-            </thead>
-            <tbody id = "data">
-              <tr>
-                <th scope="row">1</th>
-                  <td>Ice Cream</td>
-                  <td>60</td>
-                  <td>1</td>
-              </tr>
-            </tbody>
-          </table>
-      </div>
 
-      <footer class="footer">
-        <p>Built By Victoria Lo</p>
-      </footer>
-
+      <form>
+        <input id='warehouseId' type="text" placeholder="Warehouse Id">
+        <input id = 'warehouseLookup' class="btn btn-success" type="submit" value="Get Warehouse Info">
+      </form>
     </div> <!-- /container -->
 
-
   </body>
+
+  <!-- Footer -->
+  <footer id = "footer" class="page-footer font-small blue">
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+       Wherehouse Inventory Management System.</a>
+    </div>
+    <!-- Copyright -->
+
+  </footer>
+  <!-- Footer -->
 </html>

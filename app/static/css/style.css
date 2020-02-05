@@ -24,10 +24,11 @@ body {
 }
 
 /* Custom page footer */
-.footer {
-  padding-top: 1.5rem;
-  color: #777;
-  border-top: .05rem solid #e5e5e5;
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 3.5rem;            /* Footer height */
 }
 
 table, td, th {
@@ -52,16 +53,11 @@ th {
   margin: 2rem 0;
 }
 
-/* Main marketing message and sign up button */
-.jumbotron {
-  text-align: center;
-  border-bottom: .05rem solid #e5e5e5;
+#addNewItem{
+  float: right;
+  margin-right: 100px;
+  margin-top: 5px;
 }
-.jumbotron .btn {
-  padding: .75rem 1.5rem;
-  font-size: 1.5rem;
-}
-
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 48em) {
@@ -74,9 +70,5 @@ th {
   /* Space out the masthead */
   .header {
     margin-bottom: 2rem;
-  }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
   }
 }
