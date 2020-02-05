@@ -1,60 +1,49 @@
 "use strict";
 
-//initialize objects and global variables
-let numberOfItems = 0;
-let numberOfWarehouses = 0; 
-const itemData = [];
-const warehouseData = [];
+const inventoryTable = document.querySelector('#inventory-data');
 
-//Item
-class Item {
-	constructor(name, quantity, warehouse) {
-		this.name = name;
-		this.quantity = quantity;
-		this.warehouse = warehouse; //warehouse object
-		// set item ID
-		this.itemId = numberOfItems;
-		numberOfItems++;
-    }
-}
-//Warehouse
-function Warehouse(capacity) {
-	this.items = [];
-	this.capacity = capacity; //total capacity
+function loadInventory(){
+	const request = new XMLHttpRequest();
+
+	request.open("get", "../data/inventory.json"); //request server to open json file
 	
-	//storage = sum of all item quantity, init as 0
-	this.storage = 0;
+	//when the server response
+	request.onload = () =>{
+		try{
+			const json = JSON.parse(request.responseText) //server will retrieve and responseText is the json
 
-	this.warehouseId = numberOfWarehouses;
-	numberOfWarehouses++;
-}
-
-//calculates the total storage used in the warehouse
-Warehouse.prototype = {
-	getStorage: function(){
-		for(let i = 0; i < this.items.length; i++){
-			this.storage += this.items[i].quantity;
+			//after getting the json, pass it into a different function to populate the table
+			populateInventory(json); //populates the table via DOM
 		}
-		return this.storage;
-	}
-}
-//To get the storage of a warehouse, warehouseData[0].getStorage()
-
-//initial data item[0]
-function init(e){
-	if(itemData.length < 1){
-		itemData.push(new Item('Ice Cream', 65, 0));
-	
-		warehouseData.push(new Warehouse(450)); //warehouse 0
-		warehouseData.push(new Warehouse(650)); //warehouse 1
-		warehouseData.push(new Warehouse(500)); //warehouse 2
-		warehouseData.push(new Warehouse(250)); //warehouse 3
-		warehouseData.push(new Warehouse(1000)); //warehouse 4
-	
-		warehouseData[0].items.push(itemData[0]); // push item[0] to items list in warehouse 0
+		catch(e){
+			console.warn("Cannot load");
+		}
 	}
 
+	request.send(); //This sends the request
 }
 
+//function runs when page loads, json is a multi-dimensional array
+function populateInventory(json){
 
+	//clear the table HTML by removing the first child if it exists
+	while (inventoryTable.firstChild){
+		inventoryTable.removeChild(inventoryTable.firstChild);
+	}
+
+	//Populate table by looping through each array in the arrays
+	json.forEach((row) => {
+		const tr = document.createElement("tr"); //create a new row for each row
+
+		row.forEach((cell)=>{
+			const td = document.createElement("td"); //create a new cell
+			td.textContent = cell;
+			tr.appendChild(td); //append each cell to the row
+		});
+
+		inventoryTable.appendChild(tr); //append each row to the tbody
+	});
+}
+
+document.addEventListener('DOMContentLoaded', () => {loadInventory();});
 
