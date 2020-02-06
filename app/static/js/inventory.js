@@ -1,30 +1,19 @@
 "use strict";
 
+var items = new Array();
 const inventoryTable = document.querySelector('#inventory-data');
 
 function loadInventory(){
-	const request = new XMLHttpRequest();
-
-	request.open("get", "../data/inventory.json"); //request server to open json file
-	
-	//when the server response
-	request.onload = () =>{
-		try{
-			const json = JSON.parse(request.responseText) //server will retrieve and responseText is the json
-
-			//after getting the json, pass it into a different function to populate the table
-			populateInventory(json); //populates the table via DOM
-		}
-		catch(e){
-			console.warn("Cannot load");
-		}
+	var str = localStorage.getItem('data');
+	if(str!=null){
+		items = JSON.parse(str);
+		console.log(items);
+		populateInventory(items);
 	}
-
-	request.send(); //This sends the request
 }
 
 //function runs when page loads, json is a multi-dimensional array
-function populateInventory(json){
+function populateInventory(items){
 
 	//clear the table HTML by removing the first child if it exists
 	while (inventoryTable.firstChild){
@@ -32,7 +21,7 @@ function populateInventory(json){
 	}
 
 	//Populate table by looping through each array in the arrays
-	json.forEach((row) => {
+	items.forEach((row) => {
 		const tr = document.createElement("tr"); //create a new row for each row
 
 		row.forEach((cell)=>{
