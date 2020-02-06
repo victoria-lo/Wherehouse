@@ -24,10 +24,10 @@
         <nav>
           <ul class="nav nav-pills float-right">
             <li class="nav-item">
-              <a class="nav-link" href="index.html">Inventory List<span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="index.html">Inventory List</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="add.html">Add Items</a>
+              <a class="nav-link active" href="add.html">Add Items<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="warehouse.html">Manager</a>
@@ -43,7 +43,7 @@
         <input id= 'itemName' type="text" placeholder="Item Name" autocomplete="off" required>
         <input id= 'itemQty' type="number" min="0"placeholder="Quantity" autocomplete="off" required>
         <input id= 'warehouse' type="number" min="0"placeholder="Warehouse ID" autocomplete="off" required>
-        <input id = 'addNewItem' class="btn btn-success" type="click" name = "add" value="Add Inventory">
+        <input id = 'addNewItem' class="btn btn-success" type="click" readonly="readonly" value="Add Inventory">
       </form>
 
     </div> <!-- /container -->
