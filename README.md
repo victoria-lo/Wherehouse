@@ -1,27 +1,16 @@
 # Wherehouse :house:
 **Inventory Locator System**
-> 100DaysOfCode: Day 2 - 4
+> 100DaysOfCode: Day 2 - 3
 
-View blog post on [Medium](https://medium.com/@victoria2666/100-days-of-code-day-1-of-100-f31ba371a7b9)
+View Day 2 [devlog](https://medium.com/@victoria2666/100-days-of-code-day-2-of-100-c1103129832c)
 
-View project on [victoria-lo.github.io/BookFlix/](https://victoria-lo.github.io/BookFlix/)
+View Day 3 [devlog](https://medium.com/@victoria2666/100-days-of-code-day-3-of-100-d2141c4e7932)
+
+View project on [victoria-lo.github.io/Wherehouse/](https://victoria-lo.github.io/Wherehouse/)
 
 ## The Project
-- Used vanilla JavaScript, HTML and CSS to create a simple library circulation system.
-- Stores a collection of books and patrons
-- Tracks which books are borrowed and which patrons are borrowing them
-- Tracks when the books are returned
-- Use book's unique ID to lookup and display book information when requested
-
-## What I Learn
-- Using Heroku to deploy apps
-
-
-# Technologies Used
-
-## Heroku
-`heroku create`
-
-`git push heroku master`
-
-`heroku open --app <app-server-name>`
+- Built with JavaScript, HTML, Bootstrap and CSS to create a simple inventory locator system.
+- Stores items with their name, quantity and which warehouse it is stored at
+- Allows adding new inventory and dynamically loads table data
+- Managers can search warehouses by their id and see the items stored in it
+- Managers can also see remaining storage available in the warehouses
