@@ -25,12 +25,17 @@ function addInventory(e){
 	const itemName = document.getElementById("itemName").value;
 	const itemQty = document.getElementById("itemQty").value;
 	const itemWarehouse = document.getElementById("warehouse").value;
-	const data = [items.length+1, itemName, parseInt(itemQty), itemWarehouse];
-	
-	items.push(data);
-	console.log(items);
-	localStorage.setItem('data', JSON.stringify(items));
 
+	if(itemName !== ""  && itemQty !=="" && itemWarehouse !==""){
+		const data = [items.length+1, itemName, itemQty, itemWarehouse];
+		items.push(data);
+		console.log("Added "+data);
+		localStorage.setItem('data', JSON.stringify(items));
+	}
+	else{
+		console.log("Missing Values");
+	}
+	
 	document.getElementById("addForm").reset();
 
 }

@@ -41,8 +41,8 @@
 
       <form id = "addForm" method = "post">
         <input id= 'itemName' type="text" placeholder="Item Name" name = "name" required>
-        <input id= 'itemQty' type="text" placeholder="Quantity" name = "qty" required>
-        <input id= 'warehouse' type="text" placeholder="Warehouse ID" name = "warehouse" required>
+        <input id= 'itemQty' type="number" min="0"placeholder="Quantity" name = "qty" required>
+        <input id= 'warehouse' type="number" min="0"placeholder="Warehouse ID" name = "warehouse" required>
         <input id = 'addNewItem' class="btn btn-success" type="click" name = "add" value="Add Inventory">
       </form>
 
