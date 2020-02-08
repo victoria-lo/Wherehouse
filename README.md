@@ -6,7 +6,7 @@
 
 📝 [DEVLOG #2](https://medium.com/@victoria2666/100-days-of-code-day-3-of-100-d2141c4e7932)
 
-View project on [victoria-lo.github.io/Wherehouse/](https://victoria-lo.github.io/Wherehouse/)
+👀 [VIEW PROJECT](https://victoria-lo.github.io/Wherehouse/)
 
 ## The Project
 - Built with JavaScript, HTML, Bootstrap and CSS to create a simple inventory locator system.
